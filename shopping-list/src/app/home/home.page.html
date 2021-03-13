@@ -1,0 +1,83 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      My Shopping List
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="addItemForm" (ngSubmit)="addItem()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="stacked">Item</ion-label>
+          <ion-input type="text" formControlName="title" placeholder="Milk"></ion-input>
+          </ion-item>
+        </ion-col> 
+        
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Quantity</ion-label>
+          <ion-input type="text" formControlName="quantity" placeholder="1"></ion-input>
+          </ion-item>
+        </ion-col>
+          
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked">Unit</ion-label>
+            <ion-input type="text" formControlName="unit" placeholder="gal"></ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-item lines="none">
+          <ion-button (click)="addItem()" [disabled]="!addItemForm.valid">
+            <ion-icon name="add"></ion-icon>
+          </ion-button>
+        </ion-item>
+        
+      </ion-row>
+    </ion-grid>
+  </form>  
+         
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>On the list</ion-label>
+      <ion-button (click)="clear('list')">Clear List</ion-button>
+    </ion-list-header>
+    <ng-container *ngFor="let item of itemArray">
+      <ion-item button *ngIf="item.completed == false" lines="none">
+        <ion-label [routerLink]="'/items/' + item.id">{{ item.title }} - {{ item.quantity }} {{ item.unit }}</ion-label>
+        <ion-checkbox slot="start" (click)="toggleComplete(item)"></ion-checkbox>
+        <ion-button (click)="editItem(item)">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="deleteItem(item)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>In the cart</ion-label>
+      <ion-button (click)="clear('cart')">Clear Cart</ion-button>
+    </ion-list-header>
+    <ng-container *ngFor="let item of itemArray">
+      <ion-item button *ngIf="item.completed == true" class="done" lines="none">
+        <ion-label [routerLink]="'/items/' + item.id">{{ item.title }} - {{ item.quantity }} {{ item.unit }}</ion-label>
+        <ion-checkbox slot="start" checked=true color="medium" (click)="toggleComplete(item)"></ion-checkbox>
+        <ion-button (click)="editItem(item)">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="deleteItem(item)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+</ion-content>

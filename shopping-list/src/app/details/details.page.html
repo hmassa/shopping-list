@@ -1,0 +1,19 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>{{ item.title }}</ion-card-title>
+    <ion-card-subtitle>{{ item.quantity }} {{ item.unit }} </ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-label *ngIf="item.completed==true; else incomplete">Status: In the cart</ion-label>
+    <ng-template #incomplete>Status: On list</ng-template>
+    <form [formGroup]="commentForm" (ngSubmit)="save()">
+      <ion-item>
+        <ion-label position="stacked">Comments:</ion-label>
+        <ion-textarea formControlName="comment" placeholder="Add a comment"></ion-textarea>
+      </ion-item>
+      <ion-button (click)="save()">Save</ion-button>
+    </form>
+  </ion-card-content>
+
+</ion-card>
+
