@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Item } from "../interfaces/item";
 import { Storage } from "@ionic/storage";
 
-// import { startingItems } from '../../assets/items'
 import { IdService } from './id.service'
 
 @Injectable({
@@ -11,9 +10,9 @@ import { IdService } from './id.service'
 
 export class DataService {
   itemArray: Item[] = [];
-  list: string = "items";
+  list: string;
 
-  constructor(private storage: Storage, private idService: IdService) { 
+  constructor(private storage: Storage, private idService: IdService) {  
     this.getData().then((items) => {
       if (items) {
         this.itemArray = items;
