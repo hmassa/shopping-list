@@ -11,24 +11,24 @@ import { IdService } from './id.service'
 
 export class DataService {
   itemArray: Item[] = [];
-  key: string = "items";
+  list: string = "items";
 
   constructor(private storage: Storage, private idService: IdService) { 
     this.getData().then((items) => {
       if (items) {
         this.itemArray = items;
       } else {
-        this.setData(this.key, []);
+        this.setData([]);
       }
     })
   }
 
   getData() {
-    return this.storage.get(this.key);
+    return this.storage.get(this.list);
   }
 
-  setData(key: string, data: Item[]){
-    this.storage.set(key, data);
+  setData(data: Item[]){
+    this.storage.set(this.list, data);
   }
 
   getItem(id: string){
@@ -53,7 +53,7 @@ export class DataService {
       itemObj.comment = "";
       itemObj.id = this.idService.generateId();
       this.itemArray.push(itemObj);
-      this.setData(this.key, this.itemArray);
+      this.setData(this.itemArray);
       return this.itemArray;
     } else {
       return null;
@@ -66,7 +66,7 @@ export class DataService {
         this.itemArray.splice(i, 1);
       }
     }
-    this.setData(this.key, this.itemArray);
+    this.setData(this.itemArray);
     return this.itemArray;
   }
 
@@ -76,7 +76,7 @@ export class DataService {
         this.itemArray[i].completed = !this.itemArray[i].completed;
       }
     }
-    this.setData(this.key, this.itemArray);
+    this.setData(this.itemArray);
     return this.itemArray;
   }
 
@@ -96,7 +96,7 @@ export class DataService {
         }
       }
     }
-    this.setData(this.key, this.itemArray);
+    this.setData(this.itemArray);
     return this.itemArray;
   }
 }

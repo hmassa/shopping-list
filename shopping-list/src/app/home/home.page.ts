@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-
 import { Item } from "../interfaces/item";
-import { startingItems } from '../../assets/items'
 
 import { DataService } from "../services/data.service";
 
@@ -16,6 +14,8 @@ import { DataService } from "../services/data.service";
 })
 export class HomePage {
   itemArray: Item[] = [];
+  listArray: Item[] = [];
+  cartArray: Item[] = [];
   addItemForm: FormGroup;
 
   constructor(
@@ -34,10 +34,14 @@ export class HomePage {
     this.model.getData().then((items) => {
       if (items) {
         this.itemArray = items;
-      } else {
-        this.itemArray = startingItems;
+        this.updateSortedLists();
       }
-    })
+    });
+  }
+
+  private updateSortedLists() {
+    this.cartArray = this.itemArray.filter(item => item.completed === true);
+    this.listArray = this.itemArray.filter(item => item.completed === false);
   }
 
   addItem(){
@@ -45,6 +49,7 @@ export class HomePage {
     if(this.itemArray == null){
       alert("Something isn't right");
     } else {
+      this.updateSortedLists();
       this.addItemForm.patchValue({
         title: '',
         quantity: '',
@@ -54,16 +59,20 @@ export class HomePage {
     }
   }
 
-  deleteItem(item){
+  deleteItem(item: Item){
     this.itemArray = this.model.deleteItem(item);
+    this.updateSortedLists();
   }
 
-  toggleComplete(item){
+  toggleComplete(item: Item){
     this.itemArray = this.model.toggleComplete(item);
+    this.updateSortedLists();
   }
 
-  editItem(item){
+  editItem(item: Item){
     this.itemArray = this.model.deleteItem(item);
+    this.updateSortedLists();
+
     this.addItemForm.patchValue({
       title: item.title,
       quantity: item.quantity,
@@ -74,5 +83,6 @@ export class HomePage {
 
   clear(list: string){
     this.itemArray = this.model.clear(list);
+    this.updateSortedLists();
   }
 }
